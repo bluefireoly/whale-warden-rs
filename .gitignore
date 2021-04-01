@@ -1,0 +1,6 @@
+# Cargo
+target/
+
+# IDE
+.idea/
+whale-warden.iml
