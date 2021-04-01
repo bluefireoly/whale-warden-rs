@@ -5,7 +5,7 @@ use hyper::{Body, Method, Request, Response, StatusCode};
 use lazy_static::lazy_static;
 
 lazy_static! {
-    static ref WEBHOOK_NAME: String = env::var("WEBHOOK_NAME").unwrap_or("/default".into());
+    static ref WEBHOOK_PATH: String = env::var("WEBHOOK_PATH").unwrap_or("/default".into());
 }
 
 pub async fn hello_world(req: Request<Body>) -> Result<Response<Body>, Infallible> {
