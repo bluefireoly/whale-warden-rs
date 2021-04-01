@@ -10,7 +10,7 @@ lazy_static! {
 
 pub async fn hello_world(req: Request<Body>) -> Result<Response<Body>, Infallible> {
     match (req.method(), req.uri().path()) {
-        (&Method::GET, path) if path == *WEBHOOK_NAME =>
+        (&Method::GET, path) if path == *WEBHOOK_PATH =>
             Ok(Response::new("Hello world".into())),
 
         _ => {
