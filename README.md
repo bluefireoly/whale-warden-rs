@@ -18,10 +18,14 @@ services:
     image: bluefireoly/whale-warden:latest
     environment:
       WEBHOOK_TOKEN: "YOURSECRETTOKEN" # change this, as the default ist "unset"
-      WEBHOOK_PATH: "/website" # default is "/webhook/update"
-      WEBHOOK_PORT: "9091" # default is "9090"
     ports:
       - "9090:9090"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 ```
+
+Additional environment variables:
+- `WEBHOOK_PATH` (**default** = "/webhook/update")
+    - the path for the webhook
+- `WEBHOOK_PORT` (**default** = "9090")
+    - the port of the HTTP server
