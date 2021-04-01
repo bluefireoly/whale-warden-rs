@@ -10,6 +10,8 @@ This project is still in early development!
 
 ## Usage
 
+### On the host system
+
 Example `docker-compose.yml`:
 
 ```yaml
@@ -29,3 +31,8 @@ Additional environment variables:
     - the path for the webhook
 - `WEBHOOK_PORT` (**default** = "9090")
     - the port of the HTTP server
+
+### In your continuous integration environment
+
+If you are using the default settings, create webhook to the following URL:
+`http://youraddress:9090/webhook/update?token=YOURSECRETTOKEN`
