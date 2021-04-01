@@ -1,4 +1,5 @@
 use std::convert::Infallible;
+use std::env;
 use std::net::SocketAddr;
 
 use hyper::Server;
@@ -14,7 +15,8 @@ async fn main() {
         Ok::<_, Infallible>(service_fn(hello_world))
     });
 
-    let addr = SocketAddr::from(([127, 0, 0, 1], 8080));
+    let port = env::var("WEBHOOK_PORT").unwrap_or("9090".into()).parse::<u16>().unwrap();
+    let addr = SocketAddr::from(([127, 0, 0, 1], port));
     let server = Server::bind(&addr).serve(make_svc);
 
     if let Err(e) = server.await {
