@@ -10,16 +10,18 @@ This project is still in early development!
 
 ## Usage
 
+Example `docker-compose.yml`:
+
 ```yaml
 services:
-  # your custom service here
-
-  # and then add whale-warden
   whale-warden:
     image: bluefireoly/whale-warden:latest
     environment:
-      WEBHOOK_PATH: "/website" # default is "/default"
-      WEBHOOK_PORT: 9091 # default is "9090"
+      WEBHOOK_TOKEN: "YOURSECRETTOKEN" # change this, as the default ist "unset"
+      WEBHOOK_PATH: "/website" # default is "/webhook/update"
+      WEBHOOK_PORT: "9091" # default is "9090"
     ports:
       - "9090:9090"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
 ```
