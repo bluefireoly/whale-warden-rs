@@ -1,22 +1,23 @@
-use std::convert::Infallible;
 use std::env;
 
-use hyper::{Body, Method, Request, Response, StatusCode};
+use actix_web::{HttpResponse, Responder};
+use actix_web::web::Query;
 use lazy_static::lazy_static;
+use serde::Deserialize;
 
 lazy_static! {
-    static ref WEBHOOK_PATH: String = env::var("WEBHOOK_PATH").unwrap_or("/default".into());
+    static ref WEBHOOK_TOKEN: String = env::var("WEBHOOK_TOKEN").unwrap_or("unset".into());
 }
 
-pub async fn hello_world(req: Request<Body>) -> Result<Response<Body>, Infallible> {
-    match (req.method(), req.uri().path()) {
-        (&Method::GET, path) if path == *WEBHOOK_PATH =>
-            Ok(Response::new("Hello world".into())),
+#[derive(Deserialize)]
+pub struct Webhook {
+    token: String,
+}
 
-        _ => {
-            let mut not_found = Response::default();
-            *not_found.status_mut() = StatusCode::NOT_FOUND;
-            Ok(not_found)
-        }
+pub async fn hello_world(info: Query<Webhook>) -> impl Responder {
+    if info.token == *WEBHOOK_TOKEN {
+        // docker logic
+        return HttpResponse::Ok().body("Webhook succeeded")
     }
+    return HttpResponse::Forbidden().body("Wrong token")
 }

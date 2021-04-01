@@ -1,25 +1,21 @@
-use std::convert::Infallible;
 use std::env;
-use std::net::SocketAddr;
 
-use hyper::Server;
-use hyper::service::{make_service_fn, service_fn};
+use actix_web::{App, HttpServer, web};
 
 use service::hello_world;
 
 mod service;
 
-#[tokio::main]
-async fn main() {
-    let make_svc = make_service_fn(|_conn| async {
-        Ok::<_, Infallible>(service_fn(hello_world))
-    });
+#[actix_web::main]
+async fn main() -> std::io::Result<()> {
+    let port = env::var("WEBHOOK_PORT").unwrap_or("9090".into());
+    let route = env::var("WEBHOOK_PATH").unwrap_or("/webhook/update".into());
 
-    let port = env::var("WEBHOOK_PORT").unwrap_or("9090".into()).parse::<u16>().unwrap();
-    let addr = SocketAddr::from(([127, 0, 0, 1], port));
-    let server = Server::bind(&addr).serve(make_svc);
-
-    if let Err(e) = server.await {
-        eprintln!("server error: {}", e)
-    }
+    HttpServer::new(move || {
+        App::new()
+            .route(&route, web::get().to(hello_world))
+    })
+        .bind("127.0.0.1:".to_owned() + &port)?
+        .run()
+        .await
 }
