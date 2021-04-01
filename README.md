@@ -14,9 +14,12 @@ This project is still in early development!
 services:
   # your custom service here
 
-  # And then add whale-warden
+  # and then add whale-warden
   whale-warden:
     image: bluefireoly/whale-warden:latest
     environment:
-      WEBHOOK_PATH: /website
+      WEBHOOK_PATH: "/website" # default is "/default"
+      WEBHOOK_PORT: 9091 # default is "9090"
+    ports:
+      - "9090:9090"
 ```
